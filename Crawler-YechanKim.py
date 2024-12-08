@@ -119,7 +119,7 @@ def parse_response(resp: dict) -> list[dict]:
 
             # 예상치 못한 파일 형식 처리
             else:
-                print(f"예상치 못한 파일 형식: [{file_link}]")
+                print(f"PDF가 아닌 파일 형식: [{file_link}]")
                 display_pre_content(file_link)
         else:
             print(f"첨부 파일 없음: 뉴스 ID [{annual_report['ID']}]")
@@ -181,7 +181,7 @@ def save_to_csv(datas: list[dict], save_path: Path):
         save_path.parent.mkdir(parents=True, exist_ok=True)
         with open(save_path, 'w', newline='', encoding='utf-8') as f:
             csv_writer = csv.writer(f)
-            csv_writer.writerow(['Title', 'Date', 'File Path'])
+            csv_writer.writerow(['title', 'date', 'link'])
             for data in datas:
                 filename = data['link'].split('/')[-1]
                 file_path = str(save_path.parent / filename)
@@ -203,6 +203,6 @@ if __name__ == "__main__":
         doc_info_list.extend(parse_response(resp))
 
     for doc_info in doc_info_list:
-        download_pdf(Path.cwd() / 'data1', doc_info['link'])
+        download_pdf(Path.cwd() / 'data', doc_info['link'])
 
-    save_to_csv(doc_info_list, Path.cwd() / 'data1' / 'result.csv')
+    save_to_csv(doc_info_list, Path.cwd() / 'data' / 'data.csv')
